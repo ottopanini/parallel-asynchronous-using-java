@@ -6,10 +6,7 @@ import com.learnjava.domain.Review;
 import com.learnjava.service.ProductInfoService;
 import com.learnjava.service.ReviewService;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static com.learnjava.util.CommonUtil.stopWatch;
 import static com.learnjava.util.LoggerUtil.log;
@@ -25,13 +22,13 @@ public class ProductServiceUsingExecutor {
         this.reviewService = reviewService;
     }
 
-    public Product retrieveProductDetails(String productId) throws ExecutionException, InterruptedException {
+    public Product retrieveProductDetails(String productId) throws ExecutionException, InterruptedException, TimeoutException {
         stopWatch.start();
 
         Future<ProductInfo> productInfoFuture = executorService.submit(() -> productInfoService.retrieveProductInfo(productId));
         Future<Review> reviewFuture = executorService.submit(() -> reviewService.retrieveReviews(productId));
 
-        ProductInfo productInfo = productInfoFuture.get();
+        ProductInfo productInfo = productInfoFuture.get(2, TimeUnit.SECONDS);
         Review review = reviewFuture.get();
 
         stopWatch.stop();
@@ -39,7 +36,7 @@ public class ProductServiceUsingExecutor {
         return new Product(productId, productInfo, review);
     }
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
 
         ProductInfoService productInfoService = new ProductInfoService();
         ReviewService reviewService = new ReviewService();
@@ -47,6 +44,7 @@ public class ProductServiceUsingExecutor {
         String productId = "ABC123";
         Product product = productServiceUsingExecutor.retrieveProductDetails(productId);
         log("Product is " + product);
+        executorService.shutdown();
 
     }
 }

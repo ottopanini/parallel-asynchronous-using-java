@@ -136,3 +136,13 @@ Future<Review> reviewFuture = executorService.submit(() -> reviewService.retriev
 ProductInfo productInfo = productInfoFuture.get();
 Review review = reviewFuture.get();
 ```
+Execution can even be time boxed:
+```java
+ProductInfo productInfo = productInfoFuture.get(1, TimeUnit.SECONDS);
+```
+***
+ExecutorService must be shut down!
+***
+drawbacks:
+- **Future** is designed to lead to blocking (get)
+
