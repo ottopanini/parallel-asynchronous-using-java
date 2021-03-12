@@ -146,3 +146,27 @@ ExecutorService must be shut down!
 drawbacks:
 - **Future** is designed to lead to blocking (get)
 
+## Fork-Join Framework
+- This got introduced as part of Java7
+- This is an extension of **ExecutorService**
+- Fork/Join framework is designed to achieve ***Data Parallelism***
+- ExecutorService is designed to achieve ***Task Based Parallelism***
+
+### Fork Join Pool
+![](fork-join-1.png)
+At first T1 is getting the task and splits it into subtasks.
+With **Workstealing** every thread in the work queue is looking to 'steal' tasks from other tasks so that the amount of work is spread almost equally.
+
+### Fork Join Task
+![](fork-join-task-1.png)
+
+- ForkJoin Task represents part of the data and its computation
+- Type of tasks to submit to ForkJoin Pool
+    - ForkJoinTask
+        - RecursiveTask -> Task that returns a value
+        - RecursiveAction -> Task that does not return a value
+
+### ForkJoin - Use Case
+![](fork-join-2.png)
+
+**drawbacks**: code might become relatively complex.
