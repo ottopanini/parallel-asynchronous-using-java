@@ -242,3 +242,16 @@ By the examples it can be seen, that the LinkedList approach isn't as performant
 Always test performance improvements.
 ***
 
+## Parallel Streams - Final Computation Result Order
+- The order of the collection depends on:
+  - Type of Collection
+  - Spliterator Implementation of the collection
+- Example : ArrayList
+  - Type of Collection - ***Ordered***
+  - Spliterator Implementation - Ordered Spliterator Implementation
+- Example : Set
+  - Type of Collection - ***UnOrdered***
+  - Spliterator Implementation - UnOrdered Spliterator Implementation
+***
+Order is only maintained for ordered collections.
+***
