@@ -33,4 +33,12 @@ class CheckoutServiceTest {
         assertEquals(CheckoutStatus.FAILURE, checkout.getCheckoutStatus());
         // total time taken has doubled
     }
+
+    @Test
+    void shouldExseed500milliesWith25elems() {
+        Cart cart = DataSet.createCart(25);
+        CheckoutResponse checkout = checkoutService.checkout(cart);
+
+        assertEquals(CheckoutStatus.FAILURE, checkout.getCheckoutStatus());
+    }
 }
