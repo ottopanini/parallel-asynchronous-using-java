@@ -178,3 +178,26 @@ Streams in general:
 To work with parallel streams we just replace the `stream` call with `parallelStream` and thats it!1!!
 but wait... let's get closer...
 
+- Streams API are sequential by default
+    - sequential() -> Executes the stream in sequential
+    - parallel() -> Executes the stream in parallel
+    - Both the functions() changes the behavior of the whole pipeline
+
+changing the `parallelStream()` behaviour to sequential:
+```java
+List<String> stringTransform(List<String> inputs) {
+    return inputs.parallelStream()
+            .map(ParallelStreamsExample::addNameLengthTransform)
+            .sequential()
+            .collect(Collectors.toList());
+}
+```
+the other way around:
+```java
+List<String> stringTransform(List<String> inputs) {
+    return inputs.stream()
+            .map(ParallelStreamsExample::addNameLengthTransform)
+            .parallel()
+            .collect(Collectors.toList());
+}
+```
