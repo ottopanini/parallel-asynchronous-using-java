@@ -1,6 +1,5 @@
 package com.learnjava.parallelstreams;
 
-import com.learnjava.util.CommonUtil;
 import com.learnjava.util.DataSet;
 import com.learnjava.util.LoggerUtil;
 
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.learnjava.util.CommonUtil.*;
-import static com.learnjava.util.CommonUtil.delay;
 
 public class ParallelStreamsExample {
     public static void main(String[] args) {
