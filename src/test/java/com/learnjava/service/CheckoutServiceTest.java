@@ -19,4 +19,18 @@ class CheckoutServiceTest {
 
         assertEquals(CheckoutStatus.SUCCESS, checkout.getCheckoutStatus());
     }
+
+    @Test
+    void noOfCores() {
+        System.out.println("number of cores: " + Runtime.getRuntime().availableProcessors());
+    }
+
+    @Test
+    void shouldExseed500milliesAndFailCheckout() {
+        Cart cart = DataSet.createCart(Runtime.getRuntime().availableProcessors() + 1);
+        CheckoutResponse checkout = checkoutService.checkout(cart);
+
+        assertEquals(CheckoutStatus.FAILURE, checkout.getCheckoutStatus());
+        // total time taken has doubled
+    }
 }
