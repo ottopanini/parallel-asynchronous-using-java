@@ -170,3 +170,11 @@ With **Workstealing** every thread in the work queue is looking to 'steal' tasks
 ![](fork-join-2.png)
 
 **drawbacks**: code might become relatively complex.
+
+# Getting started with Parallel Streams
+Streams in general:  
+![](parallel-stream-1.png)
+
+To work with parallel streams we just replace the `stream` call with `parallelStream` and thats it!1!!
+but wait... let's get closer...
+
