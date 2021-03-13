@@ -234,3 +234,11 @@ Application overview:
 ![](cart-item-service-parallel-1.png)
 
 ## Comparing Spliterator Performances - ArrayList vs LinkedList
+By the examples it can be seen, that the LinkedList approach isn't as performant as expected. 
+- Invoking `parallelStream()` does not guarantee faster performance of your code.
+    - there are additional steps needed compared to simple sequential execution
+
+***
+Always test performance improvements.
+***
+
