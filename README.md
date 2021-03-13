@@ -208,3 +208,29 @@ Application overview:
 - invoke price validator service for every card
 - success when all items match with current pricing
 
+# Parallel Streams - Under the hood
+
+3 phases
+- split into chunks
+- execute on chunks
+- combine chunks
+
+## split
+- Data Source is split in to small data chunks
+    - Example - **List Collection** split into chunks of elements to size 1
+- This is done using `Spliterator`s 
+- For `ArrayList`, the `Spliterator` is `ArrayListSpliterator`
+
+## execute
+- Data chunks are applied to the Stream Pipeline and the **Intermediate** operations executed in a **Common ForkJoin Pool**
+- Watch the **Fork/Join FrameWork** Lectures
+
+## combine
+- Combine the executed results into a final result
+- Combine phase in Streams API maps to ***terminal*** operations
+- Uses `collect()` and `reduce()` functions 
+    - `collect(toList())`
+
+![](cart-item-service-parallel-1.png)
+
+## Comparing Spliterator Performances - ArrayList vs LinkedList
