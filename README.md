@@ -201,3 +201,10 @@ List<String> stringTransform(List<String> inputs) {
             .collect(Collectors.toList());
 }
 ```
+# Build Retail Checkout Application using Parallel Streams
+Application overview:
+![](checkout-1.png)
+
+- invoke price validator service for every card
+- success when all items match with current pricing
+
