@@ -24,7 +24,7 @@ public class ParallelStreamsExample {
     }
 
     List<String> stringTransform(List<String> inputs) {
-        return inputs.stream()
+        return inputs.parallelStream()
                 .map(ParallelStreamsExample::addNameLengthTransform)
                 .collect(Collectors.toList());
     }
