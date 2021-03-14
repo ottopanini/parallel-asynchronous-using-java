@@ -1,4 +1,4 @@
-# Multithreading,Parallel & Asynchronous Coding in Modern Java
++# Multithreading,Parallel & Asynchronous Coding in Modern Java
 This repo has the code for parallel and asynchronous programming in Java.
 
 # What is parallelism (vs. Concurrency) 
@@ -295,12 +295,36 @@ Sum then is 44 instead of 37 (when used sequential stream; correct result should
 Reduce is recommended for computations that are associative.
 ***
 
+## Streams API Operators - Poor Performance
+Stream Operations that perform poor
+- Sorting
+- Impact of Boxing and UnBoxing when it comes to parallel Streams
+  - Boxing -> Converting a Primitive Type to Wrapper class equivalent
+    - 1 -> new Integer(1)
+  - UnBoxing -> Converting a Wrapper class to Primitive equivalent
+    - new Integer(1) -> 1
 
+# Parallel Streams - Threading Model & Common ForkJoin Pool
+Common ForkJoin Pool is used by:
+- ParallelStreams
+- CompletableFuture
+- Completable Future have options to use a User-defined ThreadPools
+- Common ForkJoin Pool is shared by the whole process
 
-
-
-
- 
+Get fork join pool parallelism:
+```java
+System.out.println("parallelism: " + ForkJoinPool.getCommonPoolParallelism());
+```
+On my machine with 12 virtual cores this results to 11... what is going on with the 12th? Just check the now enhaced test output executing CheckoutServiceTest#shouldExseed500milliesWith25elems:
+```
+[ForkJoinPool.commonPool-worker-27] - isCartItemInvalid: CartItem(itemId=4, itemName=CartItem -4, rate=81.75467548000488, quantity=4, isExpired=false)
+[ForkJoinPool.commonPool-worker-13] - isCartItemInvalid: CartItem(itemId=21, itemName=CartItem -21, rate=58.32458347263204, quantity=21, isExpired=false)
+[ForkJoinPool.commonPool-worker-7] - isCartItemInvalid: CartItem(itemId=2, itemName=CartItem -2, rate=71.400996437466, quantity=2, isExpired=false)
+[ForkJoinPool.commonPool-worker-23] - isCartItemInvalid: CartItem(itemId=20, itemName=CartItem -20, rate=59.414351889905646, quantity=20, isExpired=false)
+[ForkJoinPool.commonPool-worker-17] - isCartItemInvalid: CartItem(itemId=22, itemName=CartItem -22, rate=55.50059509899339, quantity=22, isExpired=false)
+[Test worker] - isCartItemInvalid: CartItem(itemId=16, itemName=CartItem -16, rate=88.68374245754885, quantity=16, isExpired=false)
+[ForkJoinPool.commonPool-worker-9] - isCartItemInvalid: CartItem(itemId=14, itemName=CartItem -14, rate=78.41077242279059, quantity=14, isExpired=false)
+```
 
 
 
