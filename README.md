@@ -298,6 +298,7 @@ Reduce is recommended for computations that are associative.
 ## Streams API Operators - Poor Performance
 Stream Operations that perform poor
 - Sorting
+- stream API operators: `iterate()`, `limit()`
 - Impact of Boxing and UnBoxing when it comes to parallel Streams
   - Boxing -> Converting a Primitive Type to Wrapper class equivalent
     - 1 -> new Integer(1)
