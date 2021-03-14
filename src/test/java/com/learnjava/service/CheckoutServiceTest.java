@@ -7,6 +7,7 @@ import com.learnjava.util.DataSet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CheckoutServiceTest {
     PriceValidatorService priceValidatorService = new PriceValidatorService();
@@ -18,6 +19,7 @@ class CheckoutServiceTest {
         CheckoutResponse checkout = checkoutService.checkout(cart);
 
         assertEquals(CheckoutStatus.SUCCESS, checkout.getCheckoutStatus());
+        assertTrue(checkout.getFinalRate() > 0);
     }
 
     @Test

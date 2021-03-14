@@ -5,9 +5,12 @@ import com.learnjava.domain.checkout.CartItem;
 import com.learnjava.domain.checkout.CheckoutResponse;
 import com.learnjava.domain.checkout.CheckoutStatus;
 import com.learnjava.util.CommonUtil;
+import com.learnjava.util.LoggerUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.summingDouble;
 
 public class CheckoutService {
 
@@ -32,8 +35,15 @@ public class CheckoutService {
         if (!invalidCartItems.isEmpty()) {
             return new CheckoutResponse(CheckoutStatus.FAILURE, invalidCartItems);
         }
-        else {
-            return new CheckoutResponse(CheckoutStatus.SUCCESS);
-        }
+
+        double finalPrice = calculateFinalPrice(cart);
+        LoggerUtil.log("Final price: " + finalPrice);
+        return new CheckoutResponse(CheckoutStatus.SUCCESS, finalPrice);
+    }
+
+    private double calculateFinalPrice(Cart cart) {
+        return cart.getCartItemList().parallelStream()
+                .map(cartItem -> cartItem.getQuantity() * cartItem.getRate())
+                .collect(summingDouble(Double::doubleValue));
     }
 }

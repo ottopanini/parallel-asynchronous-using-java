@@ -255,3 +255,27 @@ Always test performance improvements.
 ***
 Order is only maintained for ordered collections.
 ***
+## Collect & Reduce Terminal Operation in Parallel Streams
+
+| Collect                                               | Reduce                                          |
+|-------------------------------------------------------|-------------------------------------------------|
+| - Part of Streams API                                 | - Part of Streams API                           |
+| - Used as a terminal operation in Streams API         | - Used as a terminal operation in Streams API   |
+| - Produces a single result                            | - Produces a single result                      |
+| - Result is produced in a **mutable fashion**         | - Result is produced in a **immutable fashion** |
+|                                                       | - Reduce the computation into a **single value**|
+| - Feature rich and used for many different use cases  | - Sum, Multiplication                           |
+| **Examples**:                                         | **Examples:**                                   |
+| ```collect(toList())```, ```collect(toSet())```       | ```Sum -> reduce(0.0, (x , y)->x+y)```          |
+| ```collect(summingDouble(Double::doubleValue));```    | ```Multiply -> reduce(1.0, (x , y)->x * y)```   |
+
+
+
+
+ 
+
+
+
+
+
+
