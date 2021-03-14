@@ -50,4 +50,22 @@ class CheckoutServiceTest {
 
         assertEquals(CheckoutStatus.FAILURE, checkout.getCheckoutStatus());
     }
+
+    @Test
+    void shouldUseDefaultParallelism() {
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "100");
+        Cart cart = DataSet.createCart(100);
+        CheckoutResponse checkout = checkoutService.checkout(cart);
+
+        assertEquals(CheckoutStatus.FAILURE, checkout.getCheckoutStatus());
+    }//5104ms
+
+    @Test
+    void shouldModifyParallelism() {
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "100");
+        Cart cart = DataSet.createCart(100);
+        CheckoutResponse checkout = checkoutService.checkout(cart);
+
+        assertEquals(CheckoutStatus.FAILURE, checkout.getCheckoutStatus());
+    }//714 ms
 }
