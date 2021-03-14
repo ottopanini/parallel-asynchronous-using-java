@@ -406,3 +406,15 @@ Keep in mind that `join` is a blocking call.
 - Transform the data from one form to another
 - Input is Function Functional Interface
 - Returns CompletableFuture<T>
+
+### Unit Testing CompletableFuture using JUnit5
+Check the value via:
+```java
+        helloFuture
+                .thenAccept(s -> assertEquals("HELLO WORLD", s))
+                .join();
+```
+*** 
+Watch out for the `join` here! Without it the test would pass even if the results don't match (they are simply compared after test execution).
+***
+
