@@ -269,6 +269,34 @@ Order is only maintained for ordered collections.
 | ```collect(toList())```, ```collect(toSet())```       | ```Sum -> reduce(0.0, (x , y)->x+y)```          |
 | ```collect(summingDouble(Double::doubleValue));```    | ```Multiply -> reduce(1.0, (x , y)->x * y)```   |
 
+## Identity in reduce() Operator
+```java
+public static int reduceParallel() {
+    int sum = List.of(1, 2, 3, 4, 5, 6, 7, 8)
+    .parallelStream()
+    .reduce(0, (x, y) -> x + y);
+
+    return sum;
+}
+``` 
+Identityvalues for different kinds of calculations:
+- Addition: **0**
+    - **0** + 20 = 20
+- Multiplication: **1**
+    - **1** * 20 = 20
+- when working with parallel streams the outcome is changed dramatically when using a wrong identity because of the chunking of partial calculations. In the above example it will show:
+```java
+    ...
+    .reduce(1, (x, y) -> x + y);
+```
+Sum then is 44 instead of 37 (when used sequential stream; correct result should be however 36).
+
+***
+Reduce is recommended for computations that are associative.
+***
+
+
+
 
 
 
