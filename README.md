@@ -332,6 +332,48 @@ to use every possible thread.
 
 This is shown in the `com.learnjava.service.CheckoutServiceTest#shouldModifyParallelism` test method. In this method every item runs in it's own thread. This is practical here and reduces the overall amount of used time because we don't do heavy lifting in our threads (basically waiting). If we had the opposite situation it would be recommended to not use more threads than virtual cores.
 
+# CompletableFuture
+- Introduced in Java 8 
+- CompletableFuture is an Asynchronous Reactive Functional Programming API
+- Asynchronous Computations in a functional Style
+- CompletableFutures API is created to solve the limitations of Future API
 
+## Reactive API Qualities
+![](reactive-1.png)  
+**Responsive:**
+- Fundamentally ***Asynchronous***
+- ***Call returns immediately*** and the response will be sent when its available   
 
+**Resilient:**
+- Exception or error ***won’t crash the app*** or code   
+
+**Elastic:**
+- Asynchronous Computations normally run in a ***pool of threads***
+- ***Number of of threads can go up or down*** based on the need  
+
+**Message Driven:**
+- Asynchronous computations interact with each through messages in a ***event-driven style***
+
+## CompletableFuture API
+- **Factory Methods**
+  - Initiate asynchronous computation
+- **Completion Stage Methods**
+  - Chain asynchronous computation
+- **Exception Methods** 
+  - Handle Exceptions in an Asynchronous Computation
+
+## Exploring CompletableFuture Functions
+`supplyAsync()` 
+- FactoryMethod
+- Initiate Asynchronous computation
+- Input is Supplier Functional Interface
+- Returns CompletableFuture<T>()
+
+`thenAccept()` 
+- CompletionStage Method
+- Chain Asynchronous Computation
+- Input is Consumer Functional Interface
+- Consumes the result of the previous 
+- Returns CompletableFuture<Void>
+- Use it at the end of the Asynchronous computation
 
