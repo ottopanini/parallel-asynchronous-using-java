@@ -377,3 +377,24 @@ This is shown in the `com.learnjava.service.CheckoutServiceTest#shouldModifyPara
 - Returns CompletableFuture<Void>
 - Use it at the end of the Asynchronous computation
 
+## Hello World
+```java
+HelloWorldService helloWorldService = new HelloWorldService();
+CompletableFuture.supplyAsync(helloWorldService::helloWorld)
+        .thenAccept(x -> log("Result: " + x));
+log("done!");
+```
+If run in main method there is nothing more seen than 'done!'. This is the case bacause the helloWorld method takes at least 1000 ms and at that point the main process is already completed.
+First thing todo is simply wait...
+```java
+...
+CommonUtil.delay(2000);
+```
+or even better use `join`:
+```java
+...
+CompletableFuture.supplyAsync(helloWorldService::helloWorld)
+        .thenAccept(x -> log("Result: " + x))
+        .join();
+...
+```
