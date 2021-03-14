@@ -377,7 +377,7 @@ This is shown in the `com.learnjava.service.CheckoutServiceTest#shouldModifyPara
 - Returns CompletableFuture<Void>
 - Use it at the end of the Asynchronous computation
 
-## Hello World
+### Hello World
 ```java
 HelloWorldService helloWorldService = new HelloWorldService();
 CompletableFuture.supplyAsync(helloWorldService::helloWorld)
@@ -398,3 +398,11 @@ CompletableFuture.supplyAsync(helloWorldService::helloWorld)
         .join();
 ...
 ```
+***
+Keep in mind that `join` is a blocking call.
+***
+### Transform Data using "thenApply()"
+- Completion Stage method
+- Transform the data from one form to another
+- Input is Function Functional Interface
+- Returns CompletableFuture<T>
