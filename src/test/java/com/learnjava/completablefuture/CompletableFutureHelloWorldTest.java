@@ -20,4 +20,14 @@ class CompletableFutureHelloWorldTest {
                 .thenAccept(s -> assertEquals("HELLO WORLD", s))
                 .join();
     }
+
+    @Test
+    void shouldHelloWorldWithSize() {
+        CompletableFuture<String> helloWorldWithSize = completableFutureHelloWorld.helloWorld_withSize();
+
+        helloWorldWithSize
+                .thenAccept(s -> assertEquals("11 - HELLO WORLD", s))
+                .join();
+    }
+
 }
