@@ -35,6 +35,18 @@ public class ProductServiceUsingCompletableFuture {
         return product;
     }
 
+    // no blocking op in here
+    public CompletableFuture<Product> retrieveProductDetailsFuture(String productId) {
+        CompletableFuture<ProductInfo> productInfoFuture = CompletableFuture
+                .supplyAsync(() -> productInfoService.retrieveProductInfo(productId));
+        CompletableFuture<Review> reviewFuture = CompletableFuture
+                .supplyAsync(() -> reviewService.retrieveReviews(productId));
+        CompletableFuture<Product> productCompletableFuture = productInfoFuture
+                .thenCombine(reviewFuture, (productInfo, review) -> new Product(productId, productInfo, review));//block the thread
+
+        return productCompletableFuture;
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
         ProductInfoService productInfoService = new ProductInfoService();
