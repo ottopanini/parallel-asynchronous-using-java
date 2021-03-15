@@ -436,4 +436,16 @@ Watch out for the `join` here! Without it the test would pass even if the result
 - Returns `CompletableFuture<T>`
 - **dependent task** completion depends on result of previous task
 
+# Combining Streams and CompletableFuture
+![](combine-stream-completable-1.png)
+now the product info service depends on the inventory service. 
 
+Problem with first approach - blocking call is eating performance.
+```java
+public Inventory addInventory(ProductOption productOption) {
+    delay(500);
+    return Inventory.builder()
+            .count(2).build();
+
+}
+```

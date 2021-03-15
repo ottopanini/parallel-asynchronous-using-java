@@ -1,8 +1,10 @@
 package com.learnjava.completablefuture;
 
 import com.learnjava.domain.Product;
+import com.learnjava.service.InventoryService;
 import com.learnjava.service.ProductInfoService;
 import com.learnjava.service.ReviewService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
@@ -15,8 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ProductServiceUsingCompletableFutureTest {
     private ProductInfoService productInfoService = new ProductInfoService();
     private ReviewService reviewService = new ReviewService();
+    private InventoryService inventoryService = new InventoryService();
     private ProductServiceUsingCompletableFuture productServiceUsingCompletableFuture =
-            new ProductServiceUsingCompletableFuture(productInfoService, reviewService);
+            new ProductServiceUsingCompletableFuture(productInfoService, reviewService, inventoryService);
 
     @Test
     void shouldRetrieveProductDetails() {
@@ -41,5 +44,16 @@ class ProductServiceUsingCompletableFutureTest {
                     timeTaken();
                 })
                 .join();
+    }
+
+    @Test
+    void shouldRetrieveProductDetailsWithInventory() {
+        String productId = "ABC123";
+        Product product = productServiceUsingCompletableFuture.retrieveProductDetailsWithInventory(productId);
+
+        assertNotNull(product);
+        assertTrue(product.getProductInfo().getProductOptions().size() > 0);
+        product.getProductInfo().getProductOptions().forEach(Assertions::assertNotNull);
+        assertNotNull(product.getReview());
     }
 }
