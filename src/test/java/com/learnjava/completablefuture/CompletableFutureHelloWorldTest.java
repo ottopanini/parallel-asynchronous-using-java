@@ -44,4 +44,10 @@ class CompletableFutureHelloWorldTest {
         assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", helloWorld);
     }
 
+    @Test
+    void shouldHelloWorld4CombinedAsyncTasks() {
+        String helloWorld = completableFutureHelloWorld.helloWorld_4_async_calls();
+
+        assertEquals("HELLO WORLD! HI COMPLETABLEFUTURE! BYE!", helloWorld);
+    }
 }

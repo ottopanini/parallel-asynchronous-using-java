@@ -1,10 +1,10 @@
 package com.learnjava.completablefuture;
 
 import com.learnjava.service.HelloWorldService;
-import com.learnjava.util.CommonUtil;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.learnjava.util.CommonUtil.*;
 import static com.learnjava.util.LoggerUtil.log;
 
 public class CompletableFutureHelloWorld {
@@ -27,24 +27,24 @@ public class CompletableFutureHelloWorld {
     }
 
     public String helloWorldCombinedAsyncTasks() {
-        CommonUtil.startTimer();
+        startTimer();
         CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
         CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world);
 
         String join = helloFuture.thenCombine(worldFuture, (h, w) -> h + w)
                 .thenApply(String::toUpperCase)
                 .join();
-        CommonUtil.timeTaken();
+        timeTaken();
 
         return join;
     }
 
     public String helloWorldCombined3AsyncTasks() {
-        CommonUtil.startTimer();
+        startTimer();
         CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
         CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world);
         CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
-            CommonUtil.delay(1000);
+            delay(1000);
             return "Hi Completablefuture";
         });
 
@@ -52,9 +52,35 @@ public class CompletableFutureHelloWorld {
                 .thenCombine(hiFuture, (previous, current) -> previous + current)
                 .thenApply(String::toUpperCase)
                 .join();
-        CommonUtil.timeTaken();
+        timeTaken();
 
         return join;
+    }
+
+    //assignment 4
+    public String helloWorld_4_async_calls() {
+        startTimer();
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
+        CompletableFuture<String> worlFutured = CompletableFuture.supplyAsync(helloWorldService::world);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return " HI CompletableFuture!";
+        });
+        CompletableFuture<String> byeFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return " Bye!";
+        });
+
+        String hw = helloFuture
+                .thenCombine(worlFutured, (h, w) -> h + w) // (first,second)
+                .thenCombine(hiFuture, (previous, current) -> previous + current)
+                .thenCombine(byeFuture, (previous, current) -> previous + current)
+                .thenApply(String::toUpperCase)
+                .join();
+
+        timeTaken();
+
+        return hw;
     }
 
     public static void main(String[] args) {
