@@ -417,13 +417,21 @@ Check the value via:
 *** 
 Watch out for the `join` here! Without it the test would pass even if the results don't match (they are simply compared after test execution).
 ***
-### Combing independent Async Tasks using "thenCombine"
+### Combining independent Async Tasks
 `thenCombine()`
 - This is a Completion Stage Method
 - Used to Combine Independent Completable Futures
 - Takes two arguments 
   - CompletionStage , BiFunction
-- Returns a CompletableFuture
+- Returns a `CompletableFuture<T>`
 
 ![](comibine-1.png)
 
+`thenCompose()`
+- Completion Stage method
+- Transform the data from one form to another
+- Input is **Function** Functional Interface
+- Deals with functions that return CompletableFuture
+- thenApply deals with Function that returns a value
+- Returns `CompletableFuture<T>`
+- **dependent task** completion depends on result of previous task

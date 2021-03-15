@@ -83,6 +83,12 @@ public class CompletableFutureHelloWorld {
         return hw;
     }
 
+    public CompletableFuture<String> composeHelloWorld() {
+        return CompletableFuture.supplyAsync(helloWorldService::hello)
+                .thenCompose((previous) -> helloWorldService.worldFuture(previous))
+                .thenApply(String::toUpperCase);
+    }
+
     public static void main(String[] args) {
         CompletableFutureHelloWorld completableFutureHelloWorld = new CompletableFutureHelloWorld(new HelloWorldService());
         completableFutureHelloWorld.helloWorld()
