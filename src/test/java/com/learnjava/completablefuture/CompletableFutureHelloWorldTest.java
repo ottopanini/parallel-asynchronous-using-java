@@ -30,4 +30,10 @@ class CompletableFutureHelloWorldTest {
                 .join();
     }
 
+    @Test
+    void shouldHelloWorldCombinedAsyncTasks() {
+        String helloWorld = completableFutureHelloWorld.helloWorldCombinedAsyncTasks();
+
+        assertEquals("HELLO WORLD!", helloWorld);
+    }
 }
