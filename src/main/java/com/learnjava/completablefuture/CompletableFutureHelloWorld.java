@@ -39,6 +39,24 @@ public class CompletableFutureHelloWorld {
         return join;
     }
 
+    public String helloWorldCombined3AsyncTasks() {
+        CommonUtil.startTimer();
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
+        CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            CommonUtil.delay(1000);
+            return "Hi Completablefuture";
+        });
+
+        String join = helloFuture.thenCombine(worldFuture, (h, w) -> h + w)
+                .thenCombine(hiFuture, (previous, current) -> previous + current)
+                .thenApply(String::toUpperCase)
+                .join();
+        CommonUtil.timeTaken();
+
+        return join;
+    }
+
     public static void main(String[] args) {
         CompletableFutureHelloWorld completableFutureHelloWorld = new CompletableFutureHelloWorld(new HelloWorldService());
         completableFutureHelloWorld.helloWorld()
