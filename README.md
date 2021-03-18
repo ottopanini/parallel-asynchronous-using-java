@@ -532,3 +532,7 @@ But how? The handle function is called anyway, even if no exception occured. The
 
 ## Handle/Recover Exceptions using "exceptionally" function
 ![](completable-future-handle-2.png)
+
+## Handling Exceptions using "whenComplete" function
+Catches the Exception but does not recover from it.
+![img.png](completable-future-handle-3.png)

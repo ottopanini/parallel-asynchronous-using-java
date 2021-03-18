@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,4 +72,24 @@ class CompletableFutureHelloWorldExceptionTest {
         assertEquals("HI COMPLETABLEFUTURE", result);
     }
 
+
+    @Test
+    void shouldHandleWhenCompleteNoException() {
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        String result = completableFutureHelloWorldException.helloWorldCombined3AsyncTasksWhenComplete();
+
+        assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", result);
+    }
+
+    @Test
+    void shouldHandleWhenCompleteExceptions() {
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> {
+            when(helloWorldService.hello()).thenThrow(new RuntimeException("Exception occured"));
+            when(helloWorldService.world()).thenThrow(new RuntimeException("Exception occured"));
+
+            completableFutureHelloWorldException.helloWorldCombined3AsyncTasksWhenComplete();
+        }, "Exception occured");
+    }
 }
