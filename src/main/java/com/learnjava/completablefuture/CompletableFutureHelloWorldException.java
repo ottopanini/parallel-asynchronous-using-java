@@ -93,6 +93,10 @@ public class CompletableFutureHelloWorldException {
                     if (res != null)
                         LoggerUtil.log("Result is: " + res);
                 })
+                .exceptionally(e -> {
+                    LoggerUtil.log("Exception after whenComplete is: " + e.getMessage());
+                    return "";
+                })
                 .thenCombine(hiFuture, (previous, current) -> previous + current)
                 .thenApply(String::toUpperCase)
                 .join();
