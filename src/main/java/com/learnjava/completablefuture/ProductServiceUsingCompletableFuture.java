@@ -70,6 +70,26 @@ public class ProductServiceUsingCompletableFuture {
         return product;
     }
 
+    public Product retrieveProductDetailsWithInventory_approach2(String productId) {
+        stopWatch.start();
+        CompletableFuture<ProductInfo> productInfoFuture = CompletableFuture
+                .supplyAsync(() -> productInfoService.retrieveProductInfo(productId))
+                .thenApply(productInfo -> {
+                    productInfo.setProductOptions(updateInventoryParallelCallsBlockingOnCollectResult(productInfo));
+                    return productInfo;
+                });
+
+        CompletableFuture<Review> reviewFuture = CompletableFuture
+                .supplyAsync(() -> reviewService.retrieveReviews(productId));
+        Product product = productInfoFuture
+                .thenCombine(reviewFuture, (productInfo, review) -> new Product(productId, productInfo, review))
+                .join(); //block the thread
+        stopWatch.stop();
+
+        log("Total Time Taken : "+ stopWatch.getTime());
+        return product;
+    }
+
     private List<ProductOption> updateInventory(ProductInfo productInfo) {
         return productInfo.getProductOptions().stream()
                 .map(option -> {
@@ -79,6 +99,20 @@ public class ProductServiceUsingCompletableFuture {
                     return option;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private List<ProductOption> updateInventoryParallelCallsBlockingOnCollectResult(ProductInfo productInfo) {
+        List<CompletableFuture<ProductOption>> options = productInfo.getProductOptions().stream()
+                .map(option -> {
+                    return CompletableFuture.supplyAsync(() -> inventoryService.addInventory(option))
+                            .thenApply(inventory -> {
+                                option.setInventory(inventory);
+                                return option;
+                            });
+                })
+                .collect(Collectors.toList());
+
+        return options.stream().map(CompletableFuture::join).collect(Collectors.toList());
     }
 
     public static void main(String[] args) throws InterruptedException {

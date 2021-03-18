@@ -449,3 +449,20 @@ public Inventory addInventory(ProductOption productOption) {
 
 }
 ```
+Is executed within more than 3000ms. Second approach introduces blocking code only when the results are collected
+```java
+private List<ProductOption> updateInventoryParallelCallsBlockingOnCollectResult(ProductInfo productInfo) {
+    List<CompletableFuture<ProductOption>> options = productInfo.getProductOptions().stream()
+            .map(option -> {
+                return CompletableFuture.supplyAsync(() -> inventoryService.addInventory(option))
+                        .thenApply(inventory -> {
+                            option.setInventory(inventory);
+                            return option;
+                        });
+            })
+            .collect(Collectors.toList());
+
+    return options.stream().map(CompletableFuture::join).collect(Collectors.toList());
+}
+```
+this approach takes 1500ms+.
