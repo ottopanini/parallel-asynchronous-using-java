@@ -40,4 +40,13 @@ class CompletableFutureHelloWorldExceptionTest {
         assertEquals("HI COMPLETABLEFUTURE", result);
     }
 
+    @Test
+    void shouldHandleExceptionByHelloAndWorldAndHi() {
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        String result = completableFutureHelloWorldException.helloWorldCombined3AsyncTasksHandle();
+
+        assertEquals("HI COMPLETABLEFUTURE", result);
+    }
 }

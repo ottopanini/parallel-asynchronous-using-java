@@ -518,3 +518,15 @@ Three options available:
   - exceptionally()
 - Catch Exception and Does not Recover
   - whenComplete()
+
+## Handle/Recover Exceptions using "handle" function
+
+The third test method produces an exception:
+```
+[ForkJoinPool.commonPool-worker-5] - inside world
+[ForkJoinPool.commonPool-worker-19] - inside hello
+[ForkJoinPool.commonPool-worker-19] - Exception after world is: java.lang.NullPointerException
+```
+But how? The handle function is called anyway, even if no exception occured. Then the result parameter can be used.
+![](completable-future-handle-1.png)
+

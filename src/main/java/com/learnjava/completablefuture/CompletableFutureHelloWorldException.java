@@ -34,6 +34,10 @@ public class CompletableFutureHelloWorldException {
                     return "";
                 })
                 .thenCombine(hiFuture, (previous, current) -> previous + current)
+                .handle((res, e) -> {
+                    LoggerUtil.log("Exception after world is: " + e.getMessage());
+                    return "";
+                })
                 .thenApply(String::toUpperCase)
                 .join();
         timeTaken();
