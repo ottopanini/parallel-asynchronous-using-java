@@ -41,7 +41,7 @@ class CompletableFutureHelloWorldExceptionTest {
     }
 
     @Test
-    void shouldHandleExceptionByHelloAndWorldAndHi() {
+    void shouldHandleNoException() {
         when(helloWorldService.hello()).thenCallRealMethod();
         when(helloWorldService.world()).thenCallRealMethod();
 
@@ -49,4 +49,26 @@ class CompletableFutureHelloWorldExceptionTest {
 
         assertEquals("HI COMPLETABLEFUTURE", result);
     }
+
+
+    @Test
+    void shouldHandleExceptionalNoException() {
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        String result = completableFutureHelloWorldException.helloWorldCombined3AsyncTasksExceptionally();
+
+        assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", result);
+    }
+
+    @Test
+    void shouldHandleExceptionalEveryWhere() {
+        when(helloWorldService.hello()).thenThrow(new RuntimeException("Exception occured"));
+        when(helloWorldService.world()).thenThrow(new RuntimeException("Exception occured"));
+
+        String result = completableFutureHelloWorldException.helloWorldCombined3AsyncTasksExceptionally();
+
+        assertEquals("HI COMPLETABLEFUTURE", result);
+    }
+
 }

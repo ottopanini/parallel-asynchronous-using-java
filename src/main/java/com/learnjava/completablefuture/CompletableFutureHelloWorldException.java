@@ -34,10 +34,6 @@ public class CompletableFutureHelloWorldException {
                     return "";
                 })
                 .thenCombine(hiFuture, (previous, current) -> previous + current)
-                .handle((res, e) -> {
-                    LoggerUtil.log("Exception after world is: " + e.getMessage());
-                    return "";
-                })
                 .thenApply(String::toUpperCase)
                 .join();
         timeTaken();
@@ -45,4 +41,30 @@ public class CompletableFutureHelloWorldException {
         return join;
     }
 
+    public String helloWorldCombined3AsyncTasksExceptionally() {
+        startTimer();
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
+        CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return "Hi Completablefuture";
+        });
+
+        String join = helloFuture
+                .exceptionally(e -> {
+                    LoggerUtil.log("Exception is: " + e.getMessage());
+                    return "";
+                })
+                .thenCombine(worldFuture, (h, w) -> h + w)
+                .exceptionally(e -> {
+                    LoggerUtil.log("Exception after world is: " + e.getMessage());
+                    return "";
+                })
+                .thenCombine(hiFuture, (previous, current) -> previous + current)
+                .thenApply(String::toUpperCase)
+                .join();
+        timeTaken();
+
+        return join;
+    }
 }

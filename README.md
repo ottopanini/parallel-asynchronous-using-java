@@ -530,3 +530,5 @@ The third test method produces an exception:
 But how? The handle function is called anyway, even if no exception occured. Then the result parameter can be used.
 ![](completable-future-handle-1.png)
 
+## Handle/Recover Exceptions using "exceptionally" function
+![](completable-future-handle-2.png)
