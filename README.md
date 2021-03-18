@@ -466,3 +466,55 @@ private List<ProductOption> updateInventoryParallelCallsBlockingOnCollectResult(
 }
 ```
 this approach takes 1500ms+.
+
+# Exception Handling/Recovery in CompletableFuture
+- CompletableFuture is a ***functional style*** API
+```java
+public String helloWorldAsyncCalls() {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> this.hws.hello());
+    CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> this.hws.world());
+    CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
+        delay(1000);
+        return "Hi CompletableFuture!";
+    });
+
+    String hw = hello
+            .thenCombine(world, (h, w) -> h + w)
+            .thenCombine(hiCompletableFuture, (prev, cur) -> prev + cur)
+            .thenApply(String::toUpperCase)
+            .join();
+
+    return hw;
+}
+```
+Let's have it try/catched:
+```java
+public String helloWorldAsyncCalls() {
+    try {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> this.hws.hello());
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> this.hws.world());
+        CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return "Hi CompletableFuture!";
+        });
+
+        String hw = hello
+                .thenCombine(world, (h, w) -> h + w)
+                .thenCombine(hiCompletableFuture, (prev, cur) -> prev + cur)
+                .thenApply(String::toUpperCase)
+                .join();
+
+        return hw;
+    } catch (Exception e) {
+        log("Exception is " + e);
+        throw e;
+    }
+}
+```
+CompletableFuture API has functional style of handling exceptions
+Three options available:
+- Catch Exception and Recover
+  - handle()
+  - exceptionally()
+- Catch Exception and Does not Recover
+  - whenComplete()
