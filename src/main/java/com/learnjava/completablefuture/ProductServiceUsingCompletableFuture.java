@@ -116,6 +116,10 @@ public class ProductServiceUsingCompletableFuture {
         List<CompletableFuture<ProductOption>> options = productInfo.getProductOptions().stream()
                 .map(option -> {
                     return CompletableFuture.supplyAsync(() -> inventoryService.addInventory(option))
+                            .exceptionally(e -> {
+                                log("Exception occurred by adding Inventory: " + e);
+                                return Inventory.builder().count(1).build();
+                            })
                             .thenApply(inventory -> {
                                 option.setInventory(inventory);
                                 return option;
