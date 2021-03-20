@@ -80,7 +80,15 @@ public class ProductServiceUsingCompletableFuture {
                 });
 
         CompletableFuture<Review> reviewFuture = CompletableFuture
-                .supplyAsync(() -> reviewService.retrieveReviews(productId));
+                .supplyAsync(() -> reviewService.retrieveReviews(productId))
+                .exceptionally(e -> {
+                    log("Handled the exception in review service: " + e.getMessage());
+                    return Review.builder()
+                            .noOfReviews(0)
+                            .overallRating(0)
+                            .build();
+                });
+
         Product product = productInfoFuture
                 .thenCombine(reviewFuture, (productInfo, review) -> new Product(productId, productInfo, review))
                 .join(); //block the thread
