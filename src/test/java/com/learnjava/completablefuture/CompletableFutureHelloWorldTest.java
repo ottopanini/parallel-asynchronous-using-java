@@ -53,6 +53,13 @@ class CompletableFutureHelloWorldTest {
     }
 
     @Test
+    void shouldHelloWorld3CombinedAsyncTasksWithCustomThreadPool() {
+        String helloWorld = completableFutureHelloWorld.helloWorldCombined3AsyncTasksWithCustomThreadPool();
+
+        assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", helloWorld);
+    }
+
+    @Test
     void shouldHelloWorld4CombinedAsyncTasks() {
         String helloWorld = completableFutureHelloWorld.helloWorld_4_async_calls();
 

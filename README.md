@@ -539,3 +539,17 @@ Catches the Exception but does not recover from it.
 
 # CompletableFuture & Threadpool
 By default, `CompletableFuture` uses the Common `ForkJoinPool`. The no of threads in the pool == number of cores. 
+
+## Why use a different ThreadPool?
+- Common ForkJoinPool is shared by
+  - ParallelStreams
+  - CompletableFuture
+- Its common for applications to use ParallelStreams and CompletableFuture together
+  - The following issues may occur:
+    - Thread being blocked by a time consuming task
+    - Thread not available
+
+Creating a User-defined ThreadPool:
+```java
+Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+```

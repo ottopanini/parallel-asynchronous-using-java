@@ -3,6 +3,8 @@ package com.learnjava.completablefuture;
 import com.learnjava.service.HelloWorldService;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.learnjava.util.CommonUtil.*;
 import static com.learnjava.util.LoggerUtil.log;
@@ -66,6 +68,37 @@ public class CompletableFutureHelloWorld {
             delay(1000);
             return "Hi Completablefuture";
         });
+
+        String join = helloFuture
+                .thenCombine(worldFuture, (h, w) -> {
+                    log("thenCombine h/w");
+                    return h + w;
+                })
+                .thenCombine(hiFuture, (previous, current) -> {
+                    log("thenCombine previous/current");
+                    return previous + current;
+                })
+                .thenApply(s -> {
+                    log("thenApply");
+                    return s.toUpperCase();
+                })
+                .join();
+        timeTaken();
+
+        return join;
+    }
+
+    public String helloWorldCombined3AsyncTasksWithCustomThreadPool() {
+        startTimer();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello, executorService);
+        CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world, executorService);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return "Hi Completablefuture";
+        }, executorService);
 
         String join = helloFuture
                 .thenCombine(worldFuture, (h, w) -> {
