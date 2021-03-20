@@ -45,4 +45,13 @@ class ProductServiceUsingCompletableFutureExceptionTest {
         assertEquals(0, product.getReview().getNoOfReviews());
     }
 
+    @Test
+    void retrieveProductDetailsWithInventory_approach2_productInfoServiceError() {
+        String productId = "ABC123";
+        when(productInfoService.retrieveProductInfo(any())).thenThrow(new RuntimeException("exception occurred"));
+        when(reviewService.retrieveReviews(any())).thenCallRealMethod();
+
+        Assertions.assertThrows(RuntimeException.class,
+                () -> productServiceUsingCompletableFuture.retrieveProductDetailsWithInventory_approach2(productId));
+    }
 }

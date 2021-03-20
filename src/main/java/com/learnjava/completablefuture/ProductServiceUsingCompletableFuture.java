@@ -91,6 +91,9 @@ public class ProductServiceUsingCompletableFuture {
 
         Product product = productInfoFuture
                 .thenCombine(reviewFuture, (productInfo, review) -> new Product(productId, productInfo, review))
+                .whenComplete((result, throwable) -> {
+                    log("Inside WhenComplete: " + result + " and the exception is: " + throwable);
+                })
                 .join(); //block the thread
         stopWatch.stop();
 
