@@ -536,3 +536,6 @@ But how? The handle function is called anyway, even if no exception occured. The
 ## Handling Exceptions using "whenComplete" function
 Catches the Exception but does not recover from it.
 ![img.png](completable-future-handle-3.png)
+
+# CompletableFuture & Threadpool
+By default, `CompletableFuture` uses the Common `ForkJoinPool`. The no of threads in the pool == number of cores. 

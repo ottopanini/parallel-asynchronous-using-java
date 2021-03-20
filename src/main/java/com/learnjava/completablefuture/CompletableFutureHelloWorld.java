@@ -48,9 +48,38 @@ public class CompletableFutureHelloWorld {
             return "Hi Completablefuture";
         });
 
-        String join = helloFuture.thenCombine(worldFuture, (h, w) -> h + w)
+        String join = helloFuture
+                .thenCombine(worldFuture, (h, w) -> h + w)
                 .thenCombine(hiFuture, (previous, current) -> previous + current)
                 .thenApply(String::toUpperCase)
+                .join();
+        timeTaken();
+
+        return join;
+    }
+
+    public String helloWorldCombined3AsyncTasksWithLog() {
+        startTimer();
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
+        CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return "Hi Completablefuture";
+        });
+
+        String join = helloFuture
+                .thenCombine(worldFuture, (h, w) -> {
+                    log("thenCombine h/w");
+                    return h + w;
+                })
+                .thenCombine(hiFuture, (previous, current) -> {
+                    log("thenCombine previous/current");
+                    return previous + current;
+                })
+                .thenApply(s -> {
+                    log("thenApply");
+                    return s.toUpperCase();
+                })
                 .join();
         timeTaken();
 

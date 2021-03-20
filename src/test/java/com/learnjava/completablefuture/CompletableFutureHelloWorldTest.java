@@ -46,6 +46,13 @@ class CompletableFutureHelloWorldTest {
     }
 
     @Test
+    void shouldHelloWorld3CombinedAsyncTasksWithLogs() {
+        String helloWorld = completableFutureHelloWorld.helloWorldCombined3AsyncTasksWithLog();
+
+        assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", helloWorld);
+    }
+
+    @Test
     void shouldHelloWorld4CombinedAsyncTasks() {
         String helloWorld = completableFutureHelloWorld.helloWorld_4_async_calls();
 
