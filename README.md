@@ -577,6 +577,12 @@ The corresponding test log outputs show, that the completion stage functions are
 # Handle Multiple CompletableFutures - anyOf(), allOf()
 ## Dealing with Multiple CompletableFutures - allOf()
 - static method that’s part of CompletableFuture API
-- Use allOf() when you are dealing with Multiple CompletableFuture
+- Use `allOf()` when you are dealing with Multiple CompletableFuture
 
 ![](allof-1.png)
+
+## Dealing with Multiple CompletableFutures - anyOf()
+- static method that’s part of CompletableFuture API
+- Use `anyOf()` when you are dealing with retrieving data from multiple Data Sources
+
+![](anyof-1.png)

@@ -88,4 +88,10 @@ class CompletableFutureHelloWorldTest {
         future.thenAccept(s -> assertEquals("HELLO WORLD!", s)).join();
         CommonUtil.timeTaken();
     }
+
+    @Test
+    void shouldAnyOf() {
+        String result = completableFutureHelloWorld.anyOf();
+        assertEquals("hello world", result);
+    }
 }

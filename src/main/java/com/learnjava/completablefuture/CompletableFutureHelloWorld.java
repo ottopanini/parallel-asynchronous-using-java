@@ -210,6 +210,40 @@ public class CompletableFutureHelloWorld {
                 .thenApply(String::toUpperCase);
     }
 
+    public String anyOf() {
+        //db
+        CompletableFuture<String> response_from_db = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            log("response from db");
+            return "hello world";
+        });
+        //restCall
+        CompletableFuture<String> response_from_restApi = CompletableFuture.supplyAsync(() -> {
+            delay(2000);
+            log("response from restCall");
+            return "hello world";
+        });
+        //soapCall
+        CompletableFuture<String> response_from_soapApi = CompletableFuture.supplyAsync(() -> {
+            delay(3000);
+            log("response from soapCall");
+            return "hello world";
+        });
+
+        // take the result of the fastest
+        CompletableFuture<Object> fastest = CompletableFuture.anyOf(response_from_db, response_from_restApi, response_from_soapApi);
+        String result = (String) fastest.thenApply(s -> {
+            if (s instanceof String) {
+                return s;
+            }
+
+            return null;
+        })
+                .join();
+
+        return result;
+    }
+
     public static void main(String[] args) {
         CompletableFutureHelloWorld completableFutureHelloWorld = new CompletableFutureHelloWorld(new HelloWorldService());
         completableFutureHelloWorld.helloWorld()
