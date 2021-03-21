@@ -553,3 +553,20 @@ Creating a User-defined ThreadPool:
 ```java
 Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 ```
+# Threads and Async Overloaded Methods in CompletableFuture
+**Motivation**: See `com.learnjava.completablefuture.CompletableFutureHelloWorld.helloWorldCombined3AsyncTasksWithLog`.   
+**Test Output**:   
+![](completable-future-async.png)  
+The corresponding test log outputs show, that the completion stage functions are all executed in the same thread.  
+
+**Async() Overloaded Functions**
+- Using async() functions allows you to **change the thread of execution**
+- Use this when you have **blocking operations** in your `Completablefuture` **pipeline**
+
+|Async Function    |Regular Function |
+|------------------|-----------------|
+|thenCombineAsync()|thenCombine()    |
+|thenApplyAsync()  |thenApply()      |
+|thenComposeAsync()|thenCompose()    |
+|thenAcceptAsync() |thenAccept()     |
+

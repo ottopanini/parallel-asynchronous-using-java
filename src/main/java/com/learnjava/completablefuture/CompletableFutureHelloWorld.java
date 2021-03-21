@@ -119,6 +119,65 @@ public class CompletableFutureHelloWorld {
         return join;
     }
 
+    public String helloWorldCombined3AsyncTasksWithLogAndAsyncStage() {
+        startTimer();
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello);
+        CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return "Hi Completablefuture";
+        });
+
+        String join = helloFuture
+                .thenCombineAsync(worldFuture, (h, w) -> {
+                    log("thenCombine h/w");
+                    return h + w;
+                })
+                .thenCombineAsync(hiFuture, (previous, current) -> {
+                    log("thenCombine previous/current");
+                    return previous + current;
+                })
+                .thenApplyAsync(s -> {
+                    log("thenApply");
+                    return s.toUpperCase();
+                })
+                .join();
+        timeTaken();
+
+        return join;
+    }
+
+    public String helloWorldCombined3AsyncTasksWithCustomThreadPoolAndAsyncStage() {
+        startTimer();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        CompletableFuture<String> helloFuture = CompletableFuture.supplyAsync(helloWorldService::hello, executorService);
+        CompletableFuture<String> worldFuture = CompletableFuture.supplyAsync(helloWorldService::world, executorService);
+        CompletableFuture<String> hiFuture = CompletableFuture.supplyAsync(() -> {
+            delay(1000);
+            return "Hi Completablefuture";
+        }, executorService);
+
+        String join = helloFuture
+                .thenCombineAsync(worldFuture, (h, w) -> {
+                    log("thenCombine h/w");
+                    return h + w;
+                }, executorService)
+                .thenCombineAsync(hiFuture, (previous, current) -> {
+                    log("thenCombine previous/current");
+                    return previous + current;
+                }, executorService)
+                .thenApplyAsync(s -> {
+                    log("thenApply");
+                    return s.toUpperCase();
+                }, executorService)
+                .join();
+        timeTaken();
+
+        return join;
+    }
+
     //assignment 4
     public String helloWorld_4_async_calls() {
         startTimer();

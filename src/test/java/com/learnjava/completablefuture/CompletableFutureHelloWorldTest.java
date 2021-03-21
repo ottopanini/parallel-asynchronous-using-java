@@ -53,8 +53,22 @@ class CompletableFutureHelloWorldTest {
     }
 
     @Test
+    void shouldHelloWorldCombined3AsyncTasksWithLogAndAsyncStage() {
+        String helloWorld = completableFutureHelloWorld.helloWorldCombined3AsyncTasksWithLogAndAsyncStage();
+
+        assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", helloWorld);
+    }
+
+    @Test
     void shouldHelloWorld3CombinedAsyncTasksWithCustomThreadPool() {
         String helloWorld = completableFutureHelloWorld.helloWorldCombined3AsyncTasksWithCustomThreadPool();
+
+        assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", helloWorld);
+    }
+
+    @Test
+    void shouldHelloWorld3CombinedAsyncTasksWithCustomThreadPoolAndAsyncStage() {
+        String helloWorld = completableFutureHelloWorld.helloWorldCombined3AsyncTasksWithCustomThreadPoolAndAsyncStage();
 
         assertEquals("HELLO WORLD!HI COMPLETABLEFUTURE", helloWorld);
     }
