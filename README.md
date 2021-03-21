@@ -570,3 +570,13 @@ The corresponding test log outputs show, that the completion stage functions are
 |thenComposeAsync()|thenCompose()    |
 |thenAcceptAsync() |thenAccept()     |
 
+
+# Build RestFul API Client using Spring WebClient and CompletableFuture
+`GitHubJobsClient` is used to illustrate web client behaviour using CompletableFuture.
+
+# Handle Multiple CompletableFutures - anyOf(), allOf()
+## Dealing with Multiple CompletableFutures - allOf()
+- static method that’s part of CompletableFuture API
+- Use allOf() when you are dealing with Multiple CompletableFuture
+
+![](allof-1.png)

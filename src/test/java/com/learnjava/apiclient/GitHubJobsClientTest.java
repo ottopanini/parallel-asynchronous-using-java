@@ -65,4 +65,22 @@ class GitHubJobsClientTest {
         assertTrue(gitHubPositions.size() > 0);
         gitHubPositions.forEach(Assertions::assertNotNull);
     }
+
+    @Test
+    void invokeGitHubJobsAPIWithPageNumbersCompletableFutureAllOf() {
+        //given
+        List<Integer> pageNums = List.of(1, 2, 3);
+        String description = "Java";
+
+        CommonUtil.startTimer();
+        //when
+        List<GitHubPosition> gitHubPositions = gitHubJobsClient.invokeGitHubJobsAPIWithPageNumbersCompletableFutureAllOf(pageNums, description);
+        CommonUtil.timeTaken();
+
+        LoggerUtil.log("gitHubPositions " + gitHubPositions);
+
+        //then
+        assertTrue(gitHubPositions.size() > 0);
+        gitHubPositions.forEach(Assertions::assertNotNull);
+    }
 }

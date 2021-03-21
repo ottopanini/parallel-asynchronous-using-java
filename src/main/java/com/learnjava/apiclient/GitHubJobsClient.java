@@ -56,4 +56,22 @@ public class GitHubJobsClient {
         return results;
     }
 
+    public List<GitHubPosition> invokeGitHubJobsAPIWithPageNumbersCompletableFutureAllOf(List<Integer> pageNumber,
+                                                                                         String description) {
+        List<CompletableFuture<List<GitHubPosition>>> resultFutures = pageNumber.stream()
+                .map(page -> CompletableFuture.supplyAsync(() -> invokeGitHubJobsAPIWithPageNumber(page, description)))
+                .collect(Collectors.toList());
+
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(
+                resultFutures.toArray(new CompletableFuture[resultFutures.size()]));
+
+        // the completable futures are joined when allOf are completed
+        List<GitHubPosition> results =  allOf.thenApply(voidly -> resultFutures.stream()
+                .map(CompletableFuture::join)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList()))
+                .join();
+
+        return results;
+    }
 }
